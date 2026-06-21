@@ -1,0 +1,38 @@
+[
+  {
+    "uuid": "example-claude-conv-001",
+    "name": "Designing a REST API for a task manager",
+    "created_at": "2024-06-01T09:00:00.000000+00:00",
+    "updated_at": "2024-06-01T09:12:00.000000+00:00",
+    "chat_messages": [
+      {
+        "uuid": "msg-001",
+        "text": "I'm building a task manager app. Can you help me design a clean REST API? I want to support tasks, projects, and users.",
+        "sender": "human",
+        "created_at": "2024-06-01T09:00:00.000000+00:00",
+        "attachments": []
+      },
+      {
+        "uuid": "msg-002",
+        "text": "Happy to help design this! Here's a clean REST API structure:\n\n## Resources\n\n```\nGET    /api/users/{id}\nPOST   /api/users\n\nGET    /api/projects\nPOST   /api/projects\nGET    /api/projects/{id}\nPUT    /api/projects/{id}\nDELETE /api/projects/{id}\n\nGET    /api/projects/{id}/tasks\nPOST   /api/projects/{id}/tasks\nGET    /api/tasks/{id}\nPUT    /api/tasks/{id}\nPATCH  /api/tasks/{id}\nDELETE /api/tasks/{id}\n```\n\n## Task schema\n\n```json\n{\n  \"id\": \"task_abc123\",\n  \"title\": \"Write API documentation\",\n  \"description\": \"Document all endpoints with examples\",\n  \"status\": \"in_progress\",\n  \"priority\": \"high\",\n  \"project_id\": \"proj_xyz\",\n  \"assignee_id\": \"user_123\",\n  \"due_date\": \"2024-06-15T23:59:59Z\",\n  \"created_at\": \"2024-06-01T09:00:00Z\",\n  \"updated_at\": \"2024-06-01T09:00:00Z\"\n}\n```\n\n## Key decisions\n\n**Use PATCH for partial updates** — `PUT` replaces the entire resource, `PATCH` updates only the fields you send. For tasks you'll mostly want PATCH (toggle status, update title, etc.).\n\n**Nest tasks under projects** for listing — `/api/projects/{id}/tasks` makes it easy to get all tasks in a project. But `/api/tasks/{id}` for individual task operations keeps URLs short.\n\n**Consistent error format:**\n```json\n{\n  \"error\": {\n    \"code\": \"TASK_NOT_FOUND\",\n    \"message\": \"Task task_abc123 not found\",\n    \"status\": 404\n  }\n}\n```\n\nWant me to go deeper on authentication, pagination, or filtering?",
+        "sender": "assistant",
+        "created_at": "2024-06-01T09:01:30.000000+00:00",
+        "attachments": []
+      },
+      {
+        "uuid": "msg-003",
+        "text": "Yes, how should I handle pagination?",
+        "sender": "human",
+        "created_at": "2024-06-01T09:10:00.000000+00:00",
+        "attachments": []
+      },
+      {
+        "uuid": "msg-004",
+        "text": "Use **cursor-based pagination** for tasks — it handles real-time updates (new items being added) much better than offset pagination.\n\n```\nGET /api/projects/{id}/tasks?limit=20&cursor=task_xyz789\n```\n\nResponse:\n```json\n{\n  \"data\": [...],\n  \"pagination\": {\n    \"cursor\": \"task_abc123\",\n    \"has_more\": true,\n    \"total\": 847\n  }\n}\n```\n\nThe `cursor` is the ID of the last item returned. To get the next page, pass it back as `?cursor=task_abc123`.\n\n**Why not offset?** If someone adds 5 tasks while a user is paginating, offset pagination skips items. Cursor pagination doesn't.\n\nFor the initial load (no cursor), just return the first N items sorted by `created_at DESC`.",
+        "sender": "assistant",
+        "created_at": "2024-06-01T09:11:45.000000+00:00",
+        "attachments": []
+      }
+    ]
+  }
+]

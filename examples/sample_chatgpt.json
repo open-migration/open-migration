@@ -1,0 +1,77 @@
+[
+  {
+    "id": "example-conv-001",
+    "title": "How to center a div in CSS",
+    "create_time": 1717200000.0,
+    "update_time": 1717200300.0,
+    "current_node": "msg-003",
+    "mapping": {
+      "root": {"id": "root", "parent": null, "children": ["msg-002"], "message": null},
+      "msg-002": {
+        "id": "msg-002", "parent": "root", "children": ["msg-003"],
+        "message": {
+          "id": "msg-002",
+          "author": {"role": "user"},
+          "create_time": 1717200001.0,
+          "content": {"content_type": "text", "parts": ["How do I center a div in CSS? I've tried margin: auto but it only works horizontally."]},
+          "status": "finished_successfully",
+          "metadata": {}
+        }
+      },
+      "msg-003": {
+        "id": "msg-003", "parent": "msg-002", "children": [],
+        "message": {
+          "id": "msg-003",
+          "author": {"role": "assistant"},
+          "create_time": 1717200060.0,
+          "content": {"content_type": "text", "parts": ["Great question! `margin: auto` only centers horizontally because block elements don't have automatic vertical margins.\n\nThe modern approach is **Flexbox**:\n\n```css\n.parent {\n  display: flex;\n  justify-content: center; /* horizontal */\n  align-items: center;     /* vertical */\n  height: 100vh;           /* parent needs a height */\n}\n```\n\nOr **CSS Grid** (even simpler):\n\n```css\n.parent {\n  display: grid;\n  place-items: center;\n  height: 100vh;\n}\n```\n\nBoth methods work in all modern browsers (Chrome, Firefox, Safari, Edge). Flexbox gives you more control for complex layouts; Grid is the most concise for simple centering."]},
+          "status": "finished_successfully",
+          "metadata": {}
+        }
+      }
+    }
+  },
+  {
+    "id": "example-conv-002",
+    "title": "Python list comprehension vs for loop performance",
+    "create_time": 1717100000.0,
+    "update_time": 1717100800.0,
+    "current_node": "msg-b04",
+    "mapping": {
+      "root2": {"id": "root2", "parent": null, "children": ["msg-b02"], "message": null},
+      "msg-b02": {
+        "id": "msg-b02", "parent": "root2", "children": ["msg-b03"],
+        "message": {
+          "id": "msg-b02",
+          "author": {"role": "user"},
+          "create_time": 1717100001.0,
+          "content": {"content_type": "text", "parts": ["Is a list comprehension faster than a for loop in Python?"]},
+          "status": "finished_successfully",
+          "metadata": {}
+        }
+      },
+      "msg-b03": {
+        "id": "msg-b03", "parent": "msg-b02", "children": ["msg-b04"],
+        "message": {
+          "id": "msg-b03",
+          "author": {"role": "assistant"},
+          "create_time": 1717100060.0,
+          "content": {"content_type": "text", "parts": ["Yes — list comprehensions are typically **20-35% faster** than equivalent for loops in CPython.\n\n**Why?**\n\nList comprehensions are optimised at the bytecode level. They use `LIST_APPEND` which is faster than calling `.append()` in a loop (avoids repeated attribute lookup).\n\n**Benchmark:**\n\n```python\nimport timeit\n\n# For loop\ndef with_loop(n):\n    result = []\n    for i in range(n):\n        result.append(i * 2)\n    return result\n\n# List comprehension\ndef with_comp(n):\n    return [i * 2 for i in range(n)]\n\nprint(timeit.timeit(lambda: with_loop(10000), number=1000))\nprint(timeit.timeit(lambda: with_comp(10000), number=1000))\n```\n\nTypical results: loop ~0.8s, comprehension ~0.55s for 10k elements × 1000 runs.\n\n**When to use which:**\n- Simple transformations → list comprehension\n- Complex multi-step logic → for loop (readability > micro-optimisation)\n- Memory concern → generator expression `(x for x in ...)` instead"]},
+          "status": "finished_successfully",
+          "metadata": {}
+        }
+      },
+      "msg-b04": {
+        "id": "msg-b04", "parent": "msg-b03", "children": [],
+        "message": {
+          "id": "msg-b04",
+          "author": {"role": "user"},
+          "create_time": 1717100400.0,
+          "content": {"content_type": "text", "parts": ["What about generator expressions vs list comprehensions?"]},
+          "status": "finished_successfully",
+          "metadata": {}
+        }
+      }
+    }
+  }
+]

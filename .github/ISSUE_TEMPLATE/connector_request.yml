@@ -1,0 +1,45 @@
+name: Connector Request
+description: Request support for a new AI platform or knowledge base
+labels: [connector-request, enhancement]
+body:
+  - type: input
+    id: platform
+    attributes:
+      label: Platform name
+      placeholder: "e.g. Perplexity, Mistral Le Chat, Copilot"
+    validations:
+      required: true
+
+  - type: textarea
+    id: export-method
+    attributes:
+      label: How to export data from this platform
+      description: Where is the export button / API endpoint / data download?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: format
+    attributes:
+      label: Export format
+      options:
+        - JSON
+        - ZIP containing JSON
+        - CSV
+        - HTML
+        - Plain text
+        - Other / Unknown
+
+  - type: textarea
+    id: sample
+    attributes:
+      label: Sample export structure (optional)
+      description: Paste a small anonymised snippet of the export format if you have one.
+      render: json
+
+  - type: checkboxes
+    id: willing
+    attributes:
+      label: Contribution
+      options:
+        - label: I'm willing to help build this connector

@@ -1,0 +1,63 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install open-migration
+        run: pip install -e .
+
+      - name: Generate demo archive from samples
+        run: |
+          python -c "
+          from open_migration.connectors.chatgpt import ChatGPTConnector
+          from open_migration.connectors.claude import ClaudeConnector
+          from open_migration.exporters.html_site import HtmlSiteExporter
+          from pathlib import Path
+
+          g1 = ChatGPTConnector().extract(Path('examples/sample_chatgpt.json'))
+          g2 = ClaudeConnector().extract(Path('examples/sample_claude.json'))
+          for n in g2.nodes.values(): g1.add_node(n)
+          for e in g2.edges.values(): g1.add_edge(e.type, e.from_id, e.to_id, **e.metadata)
+          HtmlSiteExporter(filename='index.html').write(g1, Path('docs/demo'))
+          print('Demo generated')
+          "
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

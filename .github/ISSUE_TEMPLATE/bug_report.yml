@@ -1,0 +1,63 @@
+name: Bug Report
+description: Something isn't working correctly
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. Please fill in as much detail as you can.
+
+  - type: input
+    id: version
+    attributes:
+      label: open-migration version
+      placeholder: "0.1.0 (run: omigrate --version)"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: source
+    attributes:
+      label: Export source
+      options:
+        - ChatGPT
+        - Claude
+        - Gemini
+        - Other / Unknown
+    validations:
+      required: true
+
+  - type: dropdown
+    id: target
+    attributes:
+      label: Target format
+      options:
+        - html
+        - obsidian
+        - markdown
+        - N/A (crash before export)
+
+  - type: textarea
+    id: command
+    attributes:
+      label: Command you ran
+      placeholder: "omigrate convert --input conversations.json --target html"
+    validations:
+      required: true
+
+  - type: textarea
+    id: error
+    attributes:
+      label: Error output
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: export-sample
+    attributes:
+      label: Minimal export sample (optional but very helpful)
+      description: |
+        A small anonymised snippet of your export JSON that triggers the bug.
+        Remove any personal content before pasting.
+      render: json

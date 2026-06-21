@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Export and migrate your AI conversations from Claude, ChatGPT, and Gemini. Own your data. Zero dependencies.">
+<meta property="og:title" content="Open Migration — Own your AI conversations">
+<meta property="og:description" content="Export Claude, ChatGPT, and Gemini conversations to Obsidian, HTML, or Markdown. Local-first. Zero config. One command.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<title>Open Migration — Own Your AI Conversations</title>
+<style>
+:root {
+  --bg: #0a0a0f;
+  --surface: #111118;
+  --surface2: #18181f;
+  --border: #2a2a38;
+  --text: #e0e0ef;
+  --text2: #9090a8;
+  --text3: #5a5a72;
+  --accent: #7c6af7;
+  --accent2: #5b4de0;
+  --green: #4ade80;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+/* Nav */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  height: 60px;
+  background: rgba(10,10,15,0.9);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(12px);
+  z-index: 100;
+}
+.nav-logo {
+  font-weight: 700;
+  font-size: 1.05rem;
+  background: linear-gradient(135deg, var(--accent), #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.nav-links { display: flex; gap: 24px; align-items: center; }
+.nav-links a {
+  color: var(--text2);
+  text-decoration: none;
+  font-size: 0.88rem;
+  transition: color 0.15s;
+}
+.nav-links a:hover { color: var(--text); }
+.nav-links .btn {
+  background: var(--accent);
+  color: #fff !important;
+  border-radius: 7px;
+  padding: 7px 16px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+.nav-links .btn:hover { background: var(--accent2); }
+
+/* Hero */
+.hero {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 80px 24px 60px;
+  text-align: center;
+}
+.hero-eyebrow {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  background: rgba(124,106,247,0.12);
+  border: 1px solid rgba(124,106,247,0.25);
+  border-radius: 100px;
+  padding: 5px 14px;
+  margin-bottom: 24px;
+}
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+.hero h1 .highlight {
+  background: linear-gradient(135deg, var(--accent), #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero p {
+  font-size: 1.08rem;
+  color: var(--text2);
+  max-width: 560px;
+  margin: 0 auto 36px;
+  line-height: 1.7;
+}
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 48px;
+}
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 9px;
+  padding: 13px 28px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: background 0.15s, transform 0.1s;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+.btn-secondary {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  text-decoration: none;
+  border-radius: 9px;
+  padding: 13px 28px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: border-color 0.15s, transform 0.1s;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.btn-secondary:hover { border-color: var(--accent); transform: translateY(-1px); }
+
+/* Install block */
+.install-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px;
+  text-align: left;
+  max-width: 520px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+.install-block::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), #a78bfa, transparent);
+}
+.install-block .label {
+  font-size: 0.7rem;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+}
+.install-block code {
+  font-family: 'Fira Code', 'Cascadia Code', monospace;
+  font-size: 0.9rem;
+  color: var(--green);
+  display: block;
+  line-height: 1.8;
+}
+.install-block .comment { color: var(--text3); }
+
+/* Platforms */
+.platforms {
+  padding: 20px 24px 0;
+  text-align: center;
+}
+.platform-row {
+  display: inline-flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.platform-chip {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 0.82rem;
+  color: var(--text2);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Features */
+.section {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 60px 24px;
+}
+.section-label {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.section h2 {
+  text-align: center;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 40px;
+}
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+.feature-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  transition: border-color 0.15s;
+}
+.feature-card:hover { border-color: rgba(124,106,247,0.4); }
+.feature-icon { font-size: 1.6rem; margin-bottom: 12px; }
+.feature-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 8px; }
+.feature-card p { font-size: 0.85rem; color: var(--text2); line-height: 1.6; }
+
+/* How it works */
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0; }
+.step {
+  padding: 28px;
+  position: relative;
+  text-align: center;
+}
+.step-num {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), #a78bfa);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+.step h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 8px; }
+.step p { font-size: 0.83rem; color: var(--text2); line-height: 1.6; }
+
+/* CTA */
+.cta {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 60px 24px;
+  text-align: center;
+}
+.cta h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 12px; }
+.cta p { color: var(--text2); margin-bottom: 28px; }
+
+/* Footer */
+footer {
+  padding: 32px 40px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+footer .copy { font-size: 0.82rem; color: var(--text3); }
+footer .links { display: flex; gap: 20px; }
+footer .links a { font-size: 0.82rem; color: var(--text2); text-decoration: none; }
+footer .links a:hover { color: var(--text); }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .hero { padding: 48px 16px 40px; }
+  footer { padding: 24px 16px; flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">⚡ Open Migration</span>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="https://github.com/open-migration/open-migration/blob/main/docs/architecture.md">Docs</a>
+    <a href="https://github.com/open-migration/open-migration" target="_blank">GitHub</a>
+    <a href="demo/" class="btn">Live Demo →</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">Open Source · Local-First · Zero Dependencies</div>
+  <h1>Your AI conversations<br>belong to <span class="highlight">you</span></h1>
+  <p>
+    Export your Claude, ChatGPT, and Gemini history into a searchable HTML archive,
+    an Obsidian vault, or plain Markdown files. One command. Your data never leaves your machine.
+  </p>
+  <div class="hero-actions">
+    <a href="demo/" class="btn-primary">▶ Live Demo</a>
+    <a href="https://github.com/open-migration/open-migration" class="btn-secondary">
+      ★ View on GitHub
+    </a>
+  </div>
+
+  <div class="install-block">
+    <div class="label">Install</div>
+    <code>pip install open-migration</code>
+    <code>&nbsp;</code>
+    <code><span class="comment"># Convert and open in browser</span></code>
+    <code>omigrate convert --input conversations.json --open</code>
+  </div>
+</section>
+
+<div class="platforms">
+  <div class="platform-row">
+    <div class="platform-chip">🤖 ChatGPT</div>
+    <div class="platform-chip">⚡ Claude</div>
+    <div class="platform-chip">✨ Gemini</div>
+    <div class="platform-chip">→</div>
+    <div class="platform-chip">🌐 HTML Archive</div>
+    <div class="platform-chip">🔮 Obsidian</div>
+    <div class="platform-chip">📝 Markdown</div>
+  </div>
+</div>
+
+<section class="section" id="features">
+  <div class="section-label">Features</div>
+  <h2>Everything your data deserves</h2>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🌐</div>
+      <h3>Searchable HTML Archive</h3>
+      <p>One self-contained file. Full-text search, dark theme, syntax-highlighted code, filter by source. Open in any browser. Works offline. No server.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔮</div>
+      <h3>Obsidian Vault</h3>
+      <p>YAML frontmatter, Obsidian callout blocks, wikilinks, auto-generated Index note. Open directly in Obsidian — no configuration needed.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📝</div>
+      <h3>Plain Markdown</h3>
+      <p>One file per conversation, plus an index README. Works with any editor, any static site generator, any version control system.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔀</div>
+      <h3>Merge Multiple Sources</h3>
+      <p>Combine ChatGPT + Claude + Gemini exports into one unified archive. <code>omigrate merge --inputs a.json b.zip</code></p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🖱️</div>
+      <h3>Web UI</h3>
+      <p>Drag-and-drop interface at localhost:7337. No command line required. <code>pip install "open-migration[web]" && omigrate serve</code></p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <h3>100% Local</h3>
+      <p>Zero network requests. No accounts. No API keys. No telemetry. Your conversations never leave your machine.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📦</div>
+      <h3>Zero Dependencies</h3>
+      <p>The core CLI has no required dependencies. Pure Python stdlib. Optional <code>rich</code> for a prettier terminal, optional <code>flask</code> for the web UI.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔌</div>
+      <h3>Extensible</h3>
+      <p>Adding a new connector (source) or exporter (target) is ~150 lines of Python. The graph architecture keeps sources and targets completely independent.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🧪</div>
+      <h3>Tested & Maintained</h3>
+      <p>38 tests across connectors, exporters, and CLI. CI matrix: Python 3.11/3.12 × Ubuntu/Windows/macOS. Active development.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-label">How it works</div>
+  <h2>Three steps to own your data</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>Export from your AI platform</h3>
+      <p>ChatGPT: Settings → Export data<br>Claude: Settings → Export Data<br>Gemini: takeout.google.com</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>Run one command</h3>
+      <p><code>omigrate convert --input export.zip --open</code><br>Auto-detects format. No configuration.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Use your data</h3>
+      <p>Search everything. Open in Obsidian. Share the HTML file. Back it up. Take it anywhere.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <h2>See it in action</h2>
+  <p>Open the live demo — real HTML output, no installation required.</p>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+    <a href="demo/" class="btn-primary">▶ Open Live Demo</a>
+    <a href="https://github.com/open-migration/open-migration" class="btn-secondary">★ Star on GitHub</a>
+  </div>
+</section>
+
+<footer>
+  <span class="copy">© 2026 Open Migration Contributors · Apache 2.0</span>
+  <div class="links">
+    <a href="https://github.com/open-migration/open-migration">GitHub</a>
+    <a href="https://pypi.org/project/open-migration/">PyPI</a>
+    <a href="https://github.com/open-migration/open-migration/blob/main/CONTRIBUTING.md">Contributing</a>
+    <a href="https://github.com/open-migration/open-migration/blob/main/docs/architecture.md">Architecture</a>
+    <a href="https://github.com/open-migration/open-migration/blob/main/SECURITY.md">Security</a>
+  </div>
+</footer>
+
+</body>
+</html>
