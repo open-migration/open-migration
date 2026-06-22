@@ -21,6 +21,7 @@ def _load(path: Path) -> Any:
     if path.is_dir():
         path = path / "conversations.json"
     if path.suffix == ".zip":
+        # Safe: reads JSON directly to memory, never extracts to disk
         with zipfile.ZipFile(path) as zf:
             name = next(
                 (n for n in zf.namelist() if n.endswith("conversations.json")),

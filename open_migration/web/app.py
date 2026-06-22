@@ -521,7 +521,7 @@ def create_app(port: int = 7337) -> "Flask":
     from open_migration.exporters import EXPORTERS
 
     app = Flask(__name__)
-    app.config["MAX_CONTENT_LENGTH"] = 500 * 1024 * 1024  # 500 MB
+    app.config["MAX_CONTENT_LENGTH"] = 50 * 1024 * 1024  # 50 MB
 
     # In-memory job store: {job_id: Path(zip_output)}
     _jobs: dict[str, Path] = {}
@@ -541,6 +541,20 @@ def create_app(port: int = 7337) -> "Flask":
 
         if target not in EXPORTERS:
             return jsonify({"error": f"Unknown target: {target}"}), 400
+
+        # Validate file format
+        filename = file.filename or ""
+        allowed_extensions = {".json", ".zip"}
+        ext = "." + filename.rsplit(".", 1)[-1].lower() if "." in filename else ""
+        if ext not in allowed_extensions:
+            return jsonify({"error": "Only .json and .zip files are supported"}), 400
+
+        # File size check (50MB limit for web UI)
+        file.seek(0, 2)  # seek to end
+        file_size = file.tell()
+        file.seek(0)  # reset
+        if file_size > 50 * 1024 * 1024:
+            return jsonify({"error": "File too large. Maximum size is 50MB for the web UI. Use the CLI for larger exports."}), 413
 
         # Save upload to temp dir
         work_dir = Path(tempfile.mkdtemp(prefix="omigrate_"))

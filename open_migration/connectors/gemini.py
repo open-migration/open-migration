@@ -24,6 +24,7 @@ def _load_takeout(path: Path) -> list[dict]:
     """
     # If given a ZIP, extract to temp approach isn't needed — just walk the ZipFile
     if path.suffix == ".zip":
+        # Safe: reads JSON directly to memory, never extracts to disk
         with zipfile.ZipFile(path) as zf:
             # Look for Gemini-related JSON files
             candidates = [

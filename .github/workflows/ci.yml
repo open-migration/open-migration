@@ -35,6 +35,17 @@ jobs:
         uses: codecov/codecov-action@v4
         continue-on-error: true
 
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install ruff
+      - run: ruff check open_migration/
+
   build:
     name: Build distribution
     runs-on: ubuntu-latest

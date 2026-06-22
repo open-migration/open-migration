@@ -75,7 +75,7 @@ ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts   = "-v --tb=short -p no:warnings"
+addopts   = "-v --tb=short"
 
 [tool.coverage.run]
 source = ["open_migration"]

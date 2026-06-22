@@ -1,7 +1,7 @@
 # Claude for OSS — Application
 
 **Project:** Open Migration
-**GitHub:** https://github.com/open-migration/open-migration
+**GitHub:** https://github.com/zoroabc2602-pixel/open-migration
 **PyPI:** https://pypi.org/project/open-migration/
 **Live demo:** https://open-migration.github.io/open-migration/demo/
 

@@ -6,14 +6,14 @@
 
 **Your AI conversations belong to you.**
 
-[![CI](https://github.com/open-migration/open-migration/actions/workflows/ci.yml/badge.svg)](https://github.com/open-migration/open-migration/actions)
+[![CI](https://github.com/zoroabc2602-pixel/open-migration/actions/workflows/ci.yml/badge.svg)](https://github.com/zoroabc2602-pixel/open-migration/actions)
 [![PyPI](https://img.shields.io/pypi/v/open-migration?color=%237c6af7)](https://pypi.org/project/open-migration/)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)](https://pypi.org/project/open-migration/)
 [![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-green)](LICENSE)
 [![Zero dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml)
 [![Tests](https://img.shields.io/badge/tests-38%20passing-brightgreen)](tests/)
 
-[**Live Demo →**](https://open-migration.github.io/open-migration/demo/) · [Quick Start](#quick-start) · [Docs](docs/) · [Contributing](CONTRIBUTING.md)
+[**Live Demo →**](https://zoroabc2602-pixel.github.io/open-migration/demo/) · [Quick Start](#quick-start) · [Docs](docs/) · [Contributing](CONTRIBUTING.md)
 
 </div>
 
@@ -37,7 +37,7 @@ One command. Zero cloud. Your data stays on your machine.
 
 ## Demo
 
-**[→ Open the live demo in your browser](https://open-migration.github.io/open-migration/demo/)**  
+**[→ Open the live demo in your browser](https://zoroabc2602-pixel.github.io/open-migration/demo/)**  
 *(No install needed — this is real output generated from sample conversations)*
 
 Or run it on your own data in 60 seconds:
@@ -288,6 +288,6 @@ Open Migration is infrastructure for the opposite of that. The goal is a connect
 
 If this saved you time, a ⭐ helps others find it.
 
-[Report a bug](https://github.com/open-migration/open-migration/issues/new?template=bug_report.yml) · [Request a connector](https://github.com/open-migration/open-migration/issues/new?template=connector_request.yml) · [Read the docs](docs/)
+[Report a bug](https://github.com/zoroabc2602-pixel/open-migration/issues/new?template=bug_report.yml) · [Request a connector](https://github.com/zoroabc2602-pixel/open-migration/issues/new?template=connector_request.yml) · [Read the docs](docs/)
 
 </div>
